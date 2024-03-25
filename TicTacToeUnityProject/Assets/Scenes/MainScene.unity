@@ -217,8 +217,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cell: {fileID: 1321337917611128215, guid: 7010964096461c0439bbfa41720e6525, type: 3}
+  zeroToken: {fileID: 4556339418558620399, guid: 058dcae1a74ee994b95db07ae131ea80, type: 3}
+  crossToken: {fileID: 8780982598702933654, guid: d818009fd2f9ce449b8ee69e53cc513e, type: 3}
   boardBackground: {fileID: 1158873536}
-  gameBoard: {fileID: 767427846}
 --- !u!114 &96614435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,7 +560,7 @@ GameObject:
   - component: {fileID: 767427847}
   - component: {fileID: 767427846}
   m_Layer: 0
-  m_Name: GameBoard
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -778,7 +779,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 835505295}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 767427846}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: StartNewGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &835505295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -835,6 +848,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4852285109946399573, guid: c96c7bd2885b2674e8876728772e6220, type: 3}
+      propertyPath: m_SpriteSortPoint
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6475988833989170512, guid: c96c7bd2885b2674e8876728772e6220, type: 3}
       propertyPath: m_RootOrder
       value: 3

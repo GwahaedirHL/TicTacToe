@@ -1,23 +1,20 @@
-﻿using UnityEngine;
-using Zenject;
-
-public class Cell : MonoBehaviour
+﻿public struct Cell
 {
-    [SerializeField]
-    SpriteRenderer cellBack;
-
-    public float side => cellBack.bounds.size.x;
-
-    public void SetScale(float scale)
+    public int X;
+    public int Y;
+    public Cell(int x, int y)
     {
-        transform.localScale = new Vector2(scale, scale);
+        X = x;
+        Y = y;
+    }
+    public static bool operator ==(Cell a, Cell b)
+    {
+        return a.X == b.X && a.Y == b.Y;
     }
 
-    public void SetPosition(Vector2 pos)
+    public static bool operator !=(Cell a, Cell b)
     {
-        transform.localPosition = pos;
+        return a.X == b.X && a.Y == b.Y;
     }
-
-    public class Factory : PlaceholderFactory<Cell> { }
 }
 
