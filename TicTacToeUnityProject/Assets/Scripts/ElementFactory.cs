@@ -7,30 +7,33 @@ public class ElementFactory
     CellView.Factory cellFactory;
     ZeroToken.Factory zeroFactory;
     CrossToken.Factory crossFactory;
+    GameBoardStateManager stateManager;
 
-    public ElementFactory(GameSettings settings, CellView.Factory cellFactory, ZeroToken.Factory zeroFactory, CrossToken.Factory crossFactory)
+    public ElementFactory(GameSettings settings, GameBoardStateManager state, CellView.Factory cellFactory, ZeroToken.Factory zeroFactory, CrossToken.Factory crossFactory)
     {
         this.settings = settings;
+        this.stateManager = state;
         this.cellFactory = cellFactory;
         this.zeroFactory = zeroFactory;
         this.crossFactory = crossFactory;
     }
 
-    public List<CellView> CreateBoardWithCells(GameBoardState state)
+    public List<CellView> CreateBoardWithCells()
     {
         var cellsList = new List<CellView>();
-        for (int x = 0; x < settings.GameBoardSideSize; x++)
+        for (int x = 0; x < settings.SideSize; x++)
         {
-            for (int y = 0; y < settings.GameBoardSideSize; y++)
+            for (int y = 0; y < settings.SideSize; y++)
             {
                 cellsList.Add(cellFactory.CreateCell(x, y, settings.PosOffset));
             }
         }
 
-        for (int i = 0; i < state.boardState.Length; i++)
+        var currentState = stateManager.GetCurrentState();
+        for (int i = 0; i < settings.CellsCount; i++)
         {
-            Cell cell = state.GetCell(i);
-            TokenType type = (TokenType)state.boardState[i];
+            Cell cell = stateManager.GetCell(i);
+            TokenType type = currentState[i];
 
             var cellView = cellsList.First(x => x.Cell == cell);
 

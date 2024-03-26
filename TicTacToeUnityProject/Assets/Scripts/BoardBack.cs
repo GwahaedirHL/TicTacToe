@@ -12,7 +12,7 @@ public class BoardBack : MonoBehaviour
     private void Start()
     {
         transform.localPosition = settings.BoardCenter;
-        sprite.size = new Vector2(settings.GameBoardSideSize, settings.GameBoardSideSize);        
+        sprite.size = new Vector2(settings.SideSize, settings.SideSize);        
     }
 }
 

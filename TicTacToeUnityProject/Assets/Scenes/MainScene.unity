@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b704cffa395a54a8295d5b04940e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cell: {fileID: 1321337917611128215, guid: 7010964096461c0439bbfa41720e6525, type: 3}
+  cellView: {fileID: 1321337917611128215, guid: 7010964096461c0439bbfa41720e6525, type: 3}
   zeroToken: {fileID: 4556339418558620399, guid: 058dcae1a74ee994b95db07ae131ea80, type: 3}
   crossToken: {fileID: 8780982598702933654, guid: d818009fd2f9ce449b8ee69e53cc513e, type: 3}
   boardBackground: {fileID: 1158873536}

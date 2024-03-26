@@ -1,43 +1,38 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
 public class GameManager : MonoBehaviour
 {
-    enum InputState
-    {
-        CrossInput = 0,
-        ZeroInput = 1,
-        CrossWin = 2,
-        ZeroWin = 3,
-        Draw = 4,
-        WaitingCrossInput = 5,
-        WaitingZeroInput = 6,
-        Checking = 7
-    } 
 
 
     ElementFactory elementFactory;
-    GameBoardState gameBoardState;
+    GameBoardStateManager gameBoardState;
     List<CellView> allCells;
-    InputState currentInputState;
+    TokenType currentInputState;
 
     [Inject]
-    public void Construct(ElementFactory elementFactory, GameBoardState state)
+    public void Construct(ElementFactory elementFactory, GameBoardStateManager state)
     {
-        this.elementFactory = elementFactory;
+        this.elementFactory = elementFactory;        
         gameBoardState = state;
-        currentInputState = InputState.WaitingCrossInput;
     }
 
     private void Start()
     {
-        GenerateCells(GameDataManager.Load());
+        gameBoardState.Load();
+        bool needStartNewGame = gameBoardState.CheckWin() || gameBoardState.CheckDraw();
+        if (needStartNewGame)
+            gameBoardState.RenewState();
+
+        GenerateCells();
+        currentInputState = gameBoardState.GetLastCashedToken() == TokenType.Cross ? TokenType.Zero : TokenType.Cross;
     }
 
-    void GenerateCells(GameBoardState gameBoardState)
+    void GenerateCells()
     {
-        allCells = elementFactory.CreateBoardWithCells(gameBoardState);
+        allCells = elementFactory.CreateBoardWithCells();
 
         foreach (CellView cell in allCells)
             if(!cell.HasToken)
@@ -47,18 +42,18 @@ public class GameManager : MonoBehaviour
 
     void RegisterInputCell(CellView clickedCell)
     {
-        if (currentInputState != InputState.WaitingCrossInput && currentInputState != InputState.WaitingZeroInput)
+        if (currentInputState != TokenType.Cross && currentInputState != TokenType.Zero)
             return;
 
         clickedCell.CellClicked -= RegisterInputCell;
 
-        if (currentInputState == InputState.WaitingCrossInput)
+        if (currentInputState == TokenType.Cross)
         {
             InputCross(clickedCell);
             return;
         }
 
-        if (currentInputState == InputState.WaitingZeroInput)
+        if (currentInputState == TokenType.Zero)
         {
             InputZero(clickedCell);
             return;
@@ -69,20 +64,20 @@ public class GameManager : MonoBehaviour
     {
         IPlacableToken token = elementFactory.CreateZeroAt(cell);
         UpdateBoardState(token);
-        currentInputState = InputState.WaitingCrossInput;
+        currentInputState = TokenType.Cross;
     }
 
     void InputCross(CellView cell) 
     {
         IPlacableToken token = elementFactory.CreateCrossAt(cell);
         UpdateBoardState(token);
-        currentInputState = InputState.WaitingZeroInput;
+        currentInputState = TokenType.Zero;
     }
 
     void UpdateBoardState(IPlacableToken token)
     {
         gameBoardState.UpdateGameBoardState(token);
-        GameDataManager.Save(gameBoardState);
+        gameBoardState.Save();
         CheckForWin();
     }
 
@@ -90,18 +85,23 @@ public class GameManager : MonoBehaviour
     {
         if (gameBoardState.CheckWin())
         {
-
+            Debug.LogError("win " + gameBoardState.GetLastCashedToken());
+            return;
         }
+
+        if (gameBoardState.CheckDraw())
+            Debug.LogError("Draw");
     }
 
     public void StartNewGame()
     {
-        gameBoardState = new GameBoardState();
+        gameBoardState.RenewState();
+        gameBoardState.Save();
+
         foreach (CellView cellview in allCells)
             Destroy(cellview.gameObject);
 
-        GenerateCells(gameBoardState);
-        GameDataManager.Save(gameBoardState);
-        currentInputState = InputState.WaitingCrossInput;
+        GenerateCells();
+        currentInputState = TokenType.Cross;
     }
 }
