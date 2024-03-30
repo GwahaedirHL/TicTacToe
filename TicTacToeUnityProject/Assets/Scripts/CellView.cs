@@ -4,21 +4,27 @@ using Zenject;
 
 public class CellView : MonoBehaviour
 {
-    public Cell Cell;
-    public event UnityAction<CellView> CellClicked;
     public bool HasToken { get; set; }
 
-    void SetPosition(Vector2 pos)
-    {
-        transform.localPosition = pos;
-    }
+    public Cell Cell;
 
+    public event UnityAction<CellView> CellClicked;
+    
     public void OnMouseDown()
     {
         CellClicked?.Invoke(this);
     }
 
-    public class Factory : PlaceholderFactory<CellView> 
+    public void DisableInput()
+    {
+        CellClicked = null;
+    }
+
+    void SetPosition(Vector2 pos)
+    {
+        transform.localPosition = pos;
+    }
+    public class Factory : PlaceholderFactory<CellView>
     {
         public CellView CreateCell(int x, int y, int posOffset)
         {

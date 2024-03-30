@@ -1,21 +1,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 public class GameManager : MonoBehaviour
 {
-
-
     ElementFactory elementFactory;
     GameBoardStateManager gameBoardState;
+    UIManager uiManager;
     List<CellView> allCells;
     TokenType currentInputState;
 
     [Inject]
-    public void Construct(ElementFactory elementFactory, GameBoardStateManager state)
+    public void Construct(ElementFactory elementFactory, GameBoardStateManager state, UIManager uiManager)
     {
-        this.elementFactory = elementFactory;        
+        this.elementFactory = elementFactory;
+        this.uiManager = uiManager;
         gameBoardState = state;
     }
 
@@ -45,7 +46,7 @@ public class GameManager : MonoBehaviour
         if (currentInputState != TokenType.Cross && currentInputState != TokenType.Zero)
             return;
 
-        clickedCell.CellClicked -= RegisterInputCell;
+        clickedCell.DisableInput();
 
         if (currentInputState == TokenType.Cross)
         {
@@ -85,12 +86,15 @@ public class GameManager : MonoBehaviour
     {
         if (gameBoardState.CheckWin())
         {
-            Debug.LogError("win " + gameBoardState.GetLastCashedToken());
+            foreach (var cell in allCells)
+                cell.DisableInput();
+
+            uiManager.OpenWinPopup(gameBoardState.GetLastCashedToken());
             return;
         }
 
         if (gameBoardState.CheckDraw())
-            Debug.LogError("Draw");
+            uiManager.OpenDrawPopup();
     }
 
     public void StartNewGame()
@@ -98,10 +102,8 @@ public class GameManager : MonoBehaviour
         gameBoardState.RenewState();
         gameBoardState.Save();
 
-        foreach (CellView cellview in allCells)
-            Destroy(cellview.gameObject);
 
-        GenerateCells();
-        currentInputState = TokenType.Cross;
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
     }
 }

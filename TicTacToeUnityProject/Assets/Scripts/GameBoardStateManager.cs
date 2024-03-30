@@ -46,7 +46,7 @@ public class GameBoardStateManager : IPlacableTokenVisitor
     public void RenewState()
     {
         runtimeState = new TokenType[settings.CellsCount];
-        lastPlayedToken = TokenType.Cross;
+        lastPlayedToken = TokenType.Zero;
     }
 
     public void UpdateGameBoardState(IPlacableToken token)
