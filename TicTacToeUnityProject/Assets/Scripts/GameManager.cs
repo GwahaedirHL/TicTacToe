@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -23,12 +22,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         gameBoardState.Load();
-        bool needStartNewGame = gameBoardState.CheckWin() || gameBoardState.CheckDraw();
+        bool needStartNewGame = gameBoardState.IsWin|| gameBoardState.IsDraw;
         if (needStartNewGame)
             gameBoardState.RenewState();
 
         GenerateCells();
-        currentInputState = gameBoardState.GetLastCashedToken() == TokenType.Cross ? TokenType.Zero : TokenType.Cross;
+        currentInputState = gameBoardState.LastCashedToken == TokenType.Cross ? TokenType.Zero : TokenType.Cross;
     }
 
     void GenerateCells()
@@ -84,16 +83,16 @@ public class GameManager : MonoBehaviour
 
     void CheckForWin()
     {
-        if (gameBoardState.CheckWin())
+        if (gameBoardState.IsWin)
         {
             foreach (var cell in allCells)
                 cell.DisableInput();
 
-            uiManager.OpenWinPopup(gameBoardState.GetLastCashedToken());
+            uiManager.OpenWinPopup(gameBoardState.LastCashedToken);
             return;
         }
 
-        if (gameBoardState.CheckDraw())
+        if (gameBoardState.IsDraw)
             uiManager.OpenDrawPopup();
     }
 

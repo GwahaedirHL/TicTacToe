@@ -220,8 +220,6 @@ MonoBehaviour:
   zeroToken: {fileID: 4556339418558620399, guid: 058dcae1a74ee994b95db07ae131ea80, type: 3}
   crossToken: {fileID: 8780982598702933654, guid: d818009fd2f9ce449b8ee69e53cc513e, type: 3}
   boardBackground: {fileID: 1158873536}
-  popupsCollection:
-    popupsCollection: []
   uiCanvas: {fileID: 831649548}
 --- !u!114 &96614435
 MonoBehaviour:
@@ -415,6 +413,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -430,6 +429,18 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9277d80b06b3e85418a50d00ae621873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -456,7 +467,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 30.5
-  orthographic: 1
+  orthographic: 0
   orthographic size: 3
   m_Depth: -1
   m_CullingMask:

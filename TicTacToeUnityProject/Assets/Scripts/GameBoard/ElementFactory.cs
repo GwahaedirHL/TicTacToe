@@ -29,7 +29,7 @@ public class ElementFactory
             }
         }
 
-        var currentState = stateManager.GetCurrentState();
+        var currentState = stateManager.CurrentState;
         for (int i = 0; i < settings.CellsCount; i++)
         {
             Cell cell = stateManager.GetCell(i);

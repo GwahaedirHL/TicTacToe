@@ -26,7 +26,7 @@ public class CellView : MonoBehaviour
     }
     public class Factory : PlaceholderFactory<CellView>
     {
-        public CellView CreateCell(int x, int y, int posOffset)
+        public CellView CreateCell(int x, int y, float posOffset)
         {
             var cell = Create();
             cell.Cell = new Cell(x, y);
