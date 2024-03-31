@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
             gameBoardState.RenewState();
 
         GenerateCells();
-        currentInputState = gameBoardState.LastCashedToken == TokenType.Cross ? TokenType.Zero : TokenType.Cross;
+        currentInputState = gameBoardState.NextMoveToken;
     }
 
     void GenerateCells()
@@ -37,12 +37,11 @@ public class GameManager : MonoBehaviour
         foreach (CellView cell in allCells)
             if(!cell.HasToken)
                 cell.CellClicked += RegisterInputCell;
-
     }
 
     void RegisterInputCell(CellView clickedCell)
     {
-        if (currentInputState != TokenType.Cross && currentInputState != TokenType.Zero)
+        if (currentInputState == TokenType.Empty)
             return;
 
         clickedCell.DisableInput();
@@ -52,12 +51,8 @@ public class GameManager : MonoBehaviour
             InputCross(clickedCell);
             return;
         }
-
-        if (currentInputState == TokenType.Zero)
-        {
+        else
             InputZero(clickedCell);
-            return;
-        }
     }
 
     void InputZero(CellView cell)
@@ -100,7 +95,6 @@ public class GameManager : MonoBehaviour
     {
         gameBoardState.RenewState();
         gameBoardState.Save();
-
 
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);

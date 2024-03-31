@@ -16,6 +16,7 @@ public class GameBoardStateManager : IPlacableTokenVisitor
 
     public TokenType[] CurrentState => runtimeState;
     public TokenType LastCashedToken => lastPlayedToken;
+    public TokenType NextMoveToken => lastPlayedToken == TokenType.Cross ? TokenType.Zero : TokenType.Cross;
     public bool IsWin => GetColomnWin() || GetRowWin() || GetDiagonalWin();
     public bool IsDraw => runtimeState.All(token => token != TokenType.Empty);
 
