@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class GameDataManager 
 {
-    static string path = Application.dataPath;
+    static string path = Application.persistentDataPath;
     public static void Save(GameStateData state)
     {
         string fullpath = Path.Combine(path, "SavedGame.json");
